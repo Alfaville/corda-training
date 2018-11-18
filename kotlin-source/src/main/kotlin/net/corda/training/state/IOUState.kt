@@ -4,7 +4,6 @@ import net.corda.core.contracts.Amount
 import net.corda.core.contracts.LinearState
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.identity.Party
-import net.corda.finance.DOLLARS
 import java.util.*
 
 /**
@@ -16,21 +15,13 @@ data class IOUState(
         val amount: Amount<Currency>,
         val lender: Party,
         val borrower: Party,
-        val paid: Amount<Currency> = 0.DOLLARS,
+        val paid: Amount<Currency> = Amount(0, amount.token),
         override val linearId: UniqueIdentifier = UniqueIdentifier()): LinearState {
 
     override val participants: List<Party> get() = listOf(lender, borrower)
 
-    fun pay(value: Amount<Currency>): IOUState {
-        return IOUState(amount, lender, borrower, paid).copy(paid = paid.plus(value))
-    }
+    fun pay(value: Amount<Currency>) = copy(paid = paid.plus(value))
 
-    fun withNewLender(newLender: Party): IOUState {
-        return IOUState(amount, lender, borrower).copy(lender = newLender)
-    }
-
-//    fun pay(amountToPay : Amount<Currency>) = copy(paid = paid.plus(amountToPay))
-
-//    fun withNewLender(newLender : Party) = copy(lender = newLender)
+    fun withNewLender(newLender: Party) = copy(lender = newLender)
 
 }
