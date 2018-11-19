@@ -41,8 +41,4 @@ class IOUContract : Contract {
          }
     }
 
-    // command.getSigners().containsAll(
-    //      out.getParticipants().stream().map(AbstractParty::getOwningKey).collect(Collectors.toList()))
-    // );
-
 }
